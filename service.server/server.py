@@ -85,16 +85,10 @@ def start_cloudflared_tunnel():
 # --- A API FLASK ---
 app = Flask(__name__)
 # --- INÍCIO DA SEÇÃO CORS CRÍTICA ---
-# Assegure-se que esta seção está exatamente assim.
-# Adicionamos a URL do seu túnel à lista também como boa prática,
-# embora a permissão seja baseada na origem do *solicitante*.
+from flask_cors import CORS
 
-origins = [
-    "http://127.0.0.1:5500",  # PERMISSÃO PARA SEU AMBIENTE DE DESENVOLVIMENTO
-    "null"                   # PERMISSÃO PARA ABRIR O index.html LOCALMENTE
-    # "https://sua.url.de.producao.com" # QUANDO VOCÊ HOSPEDAR A CONSOLE
-]
-CORS(app, resources={r"/*": {"origins": origins}})
+# Permite *todas* as origens
+CORS(app)
 # --- FIM DA SEÇÃO CORS ---
 
 @app.route('/status')
