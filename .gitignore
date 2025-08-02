@@ -6,6 +6,8 @@
 # Dependências do Node.js (WebApp)
 /node_modules/
 
+#
+*.env
 # Arquivos compilados e de sistema
 *.exe
 *.log
@@ -14,6 +16,7 @@
 *.pfx
 *.key
 Registre.hiv
+
 
 # Caches do Python
 __pycache__/
