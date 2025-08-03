@@ -11,8 +11,7 @@ import threading
 from time import sleep
 from flask import Flask, jsonify, request
 from waitress import serve
-# 1. IMPORTAÇÃO ADICIONADA PARA SEGURANÇA DE ORIGEM
-from flask_cors import CORS
+from flask_cors import CORS # 1. IMPORTAÇÃO ADICIONADA PARA SEGURANÇA DE ORIGEM
 
 # --- CONFIGURAÇÃO DE CAMINHOS E LOGS ---
 APP_NAME = "pecztusb-api-server"
@@ -85,10 +84,7 @@ def start_cloudflared_tunnel():
 # --- A API FLASK ---
 app = Flask(__name__)
 # --- INÍCIO DA SEÇÃO CORS CRÍTICA ---
-from flask_cors import CORS
-
-# Permite *todas* as origens
-CORS(app)
+CORS(app) # Permite *todas* as origens
 # --- FIM DA SEÇÃO CORS ---
 
 @app.route('/status')
