@@ -16,7 +16,7 @@ services:
     entrypoint: ""
     command: >
       sh -c '
-        acme.sh --register-account -m seu@email.com &&
+        acme.sh --register-account -m ${EMAIL} &&
         acme.sh --set-default-ca --server letsencrypt &&
         acme.sh --issue --dns dns_cf -d ${HOSTNAME} --keylength ec-256 &&
         acme.sh --install-cert -d ${HOSTNAME} --ecc \
