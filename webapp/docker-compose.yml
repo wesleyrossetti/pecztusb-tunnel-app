@@ -5,8 +5,34 @@ services:
     container_name: cloudflared_tunnel
     command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
     restart: unless-stopped
+    
+  certbot:
+    image: neilpang/acme.sh
+    container_name: acme_certbot
+    environment:
+      - CF_Token=${CERT_TOKEN}
+    volumes:
+      - ./certs:/acme.sh
+    entrypoint: ""
+    command: >
+      sh -c '
+        acme.sh --register-account -m seu@email.com &&
+        acme.sh --set-default-ca --server letsencrypt &&
+        acme.sh --issue --dns dns_cf -d ${HOSTNAME} --keylength ec-256 &&
+        acme.sh --install-cert -d ${HOSTNAME} --ecc \
+          --cert-file /acme.sh/${HOSTNAME}_ecc/cert.cer \
+          --key-file /acme.sh/${HOSTNAME}_ecc/${HOSTNAME}.key \
+          --fullchain-file /acme.sh/${HOSTNAME}_ecc/fullchain.cer \
+          --reloadcmd "echo Certificado instalado"
+      '
+
   web:
     #image: webapp  #utilizar para build local
     image: wesleyrossetti/laetonline.org:latest #imagem no registry publico dockerhub
     container_name: webapp_container
+    hostname: ${HOSTNAME}
     restart: unless-stopped
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - certbot
