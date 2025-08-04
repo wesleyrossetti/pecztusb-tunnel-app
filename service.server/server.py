@@ -84,7 +84,13 @@ def start_cloudflared_tunnel():
 # --- A API FLASK ---
 app = Flask(__name__)
 # --- INÍCIO DA SEÇÃO CORS CRÍTICA ---
-CORS(app) # Permite *todas* as origens
+CORS(
+    app,
+    resources={r"/*": {"origins": "*"}},
+    supports_credentials=True,
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "OPTIONS"]
+) 
 # --- FIM DA SEÇÃO CORS ---
 
 @app.route('/status')
