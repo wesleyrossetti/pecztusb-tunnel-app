@@ -16,13 +16,14 @@ services:
     entrypoint: ""
     command: >
       sh -c '
+        echo "EMAIL=${EMAIL}, DNSSERVER=${DNSSERVER}";
         acme.sh --register-account -m ${EMAIL} &&
         acme.sh --set-default-ca --server letsencrypt &&
-        acme.sh --issue --dns dns_cf -d ${HOSTNAME} --keylength ec-256 &&
-        acme.sh --install-cert -d ${HOSTNAME} --ecc \
-          --cert-file /acme.sh/${HOSTNAME}_ecc/cert.cer \
-          --key-file /acme.sh/${HOSTNAME}_ecc/${HOSTNAME}.key \
-          --fullchain-file /acme.sh/${HOSTNAME}_ecc/fullchain.cer \
+        acme.sh --issue --dns dns_cf -d ${DNSSERVER} --keylength ec-256 &&
+        acme.sh --install-cert -d ${DNSSERVER} --ecc \
+          --cert-file /acme.sh/${DNSSERVER}_ecc/cert.cer \
+          --key-file /acme.sh/${DNSSERVER}_ecc/${DNSSERVER}.key \
+          --fullchain-file /acme.sh/${DNSSERVER}_ecc/fullchain.cer \
           --reloadcmd "echo Certificado instalado"
       '
 
